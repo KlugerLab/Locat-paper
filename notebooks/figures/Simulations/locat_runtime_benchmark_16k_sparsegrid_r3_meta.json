@@ -1,0 +1,28 @@
+{
+  "h5ad": "/banach2/wes/Locat/notebooks/data/kang_counts_25k.h5ad",
+  "embedding_key_used": "X_umap",
+  "cells_grid": [
+    1000,
+    4000,
+    8000,
+    16000
+  ],
+  "genes_grid": [
+    500,
+    1000,
+    2000,
+    4000
+  ],
+  "reps": 3,
+  "seed": 1,
+  "k": 30,
+  "background_reps": 3,
+  "null_reps": 8,
+  "null_fracs": [
+    0.01,
+    0.03,
+    0.1,
+    0.3,
+    0.6
+  ]
+}
