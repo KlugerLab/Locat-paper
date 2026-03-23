@@ -16,6 +16,7 @@ matplotlib.use("Agg")
 
 import os
 import sys
+from pathlib import Path
 from dataclasses import dataclass
 
 import anndata as ad
@@ -26,13 +27,14 @@ import scanpy as sc
 from scipy.stats import kstest
 from sklearn.datasets import make_blobs
 
-sys.path.insert(0, "/banach2/wes/locat-0.1")
+LOCAT01_PATH = Path(os.environ.get("LOCAT01_PATH", str(Path(__file__).resolve().parents[3].parent / "locat-0.1")))
+sys.path.insert(0, str(LOCAT01_PATH))
 os.environ.setdefault("CUDA_VISIBLE_DEVICES", "")
 
 from locat.locat import LOCAT
 
 
-OUTDIR = "/banach2/wes/Locat-paper-repro-private/notebooks/figures/Simulations/support_files"
+OUTDIR = str(Path(__file__).resolve().parent / "support_files")
 P_FLOOR = 1e-300
 
 plt.rcParams.update(

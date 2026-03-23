@@ -9,7 +9,7 @@ The full machine-readable list is in `manifests/repro_bundle_manifest.csv`.
 - `pbmc3k_lognorm.h5ad` and `pbmc3k_processed.h5ad`
 - `kang_counts_25k.h5ad`
 - selected PBMC CV outputs and simulation benchmark outputs
-- external `locat-0.1` repo at `/banach2/wes/locat-0.1`
+- external `locat-0.1` repo resolved via `LOCAT01_PATH` or a sibling checkout
 
 ## External large files
 

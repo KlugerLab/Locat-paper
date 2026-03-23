@@ -1,5 +1,5 @@
 {
-  "h5ad": "/banach2/wes/Locat/notebooks/data/kang_counts_25k.h5ad",
+  "h5ad": "<LOCAL_ROOT>/Locat/notebooks/data/kang_counts_25k.h5ad",
   "embedding_key_used": "X_umap",
   "cells_grid": [
     1000,

@@ -129,7 +129,7 @@ def main() -> None:
     parser.add_argument(
         "--locat-repo",
         type=str,
-        default="/banach2/wes/locat-0.1",
+        default=os.environ.get("LOCAT01_PATH", str(Path(__file__).resolve().parents[3].parent / "locat-0.1")),
         help="Path containing the locat package source.",
     )
     parser.add_argument("--embedding-key", type=str, default="X_umap")
