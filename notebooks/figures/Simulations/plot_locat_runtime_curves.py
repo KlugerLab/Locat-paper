@@ -94,12 +94,12 @@ def main() -> None:
     parser.add_argument(
         "--raw-csv",
         type=str,
-        default="/banach2/wes/Locat/notebooks/figures/Simulations/locat_runtime_benchmark_16k_sparsegrid_r3_raw.csv",
+        default="/banach2/wes/Locat-paper-repro-private/notebooks/figures/Simulations/support_files/locat_runtime_benchmark_16k_sparsegrid_r3_raw.csv",
     )
     parser.add_argument(
         "--out-prefix",
         type=str,
-        default="/banach2/wes/Locat/notebooks/figures/Simulations/locat_runtime_curves_r3",
+        default="/banach2/wes/Locat-paper-repro-private/notebooks/figures/Simulations/support_files/locat_runtime_curves_r3",
     )
     args = parser.parse_args()
 

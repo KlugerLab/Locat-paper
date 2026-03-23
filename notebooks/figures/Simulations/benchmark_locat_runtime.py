@@ -123,13 +123,13 @@ def main() -> None:
     parser.add_argument(
         "--h5ad",
         type=str,
-        default=str(Path(__file__).with_name("sim_subs.h5ad")),
+        default=str(Path(__file__).resolve().parent / "support_files" / "sim_subs.h5ad"),
         help="Input AnnData file.",
     )
     parser.add_argument(
         "--locat-repo",
         type=str,
-        default="../../../locat-0.1",
+        default="/banach2/wes/locat-0.1",
         help="Path containing the locat package source.",
     )
     parser.add_argument("--embedding-key", type=str, default="X_umap")
@@ -147,7 +147,7 @@ def main() -> None:
     parser.add_argument(
         "--out-prefix",
         type=str,
-        default=str(Path(__file__).with_name("locat_runtime_benchmark")),
+        default=str(Path(__file__).resolve().parent / "support_files" / "locat_runtime_benchmark"),
     )
     args = parser.parse_args()
 

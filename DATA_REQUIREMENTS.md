@@ -9,7 +9,7 @@ The full machine-readable list is in `manifests/repro_bundle_manifest.csv`.
 - `pbmc3k_lognorm.h5ad` and `pbmc3k_processed.h5ad`
 - `kang_counts_25k.h5ad`
 - selected PBMC CV outputs and simulation benchmark outputs
-- bundled `locat-0.1` source snapshot
+- external `locat-0.1` repo at `/banach2/wes/locat-0.1`
 
 ## External large files
 
@@ -20,7 +20,7 @@ These notebooks still require large dermal data objects that were not committed:
 - `adatasigsubfiltered.h5ad`
 
 The repo does include smaller dermal support files such as:
-- `clusters.csv`
+- `support_files/clusters.csv`
 - `E145_wls_dermal_FP_results.npy`
 - selected locat result pickles used by the repro notebooks
 

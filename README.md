@@ -3,7 +3,7 @@
 This private staging repo starts from the public `KlugerLab/Locat-paper` repository and adds the updated reproducibility materials that use `locat-0.1`.
 
 ## Included
-- Snapshot of `locat-0.1` source in `locat-0.1/`
+- `locat-0.1` is expected as an external sibling repo at `/banach2/wes/locat-0.1`
 - Updated locat-0.1 reproducibility notebooks under `notebooks/figures/`
 - Updated simulation/runtime scripts under `notebooks/figures/Simulations/`
 - Small and medium support files, result summaries, and selected figure outputs
@@ -22,4 +22,4 @@ The bundle mirrors the working folder structure used in the main LOCAT repo:
 - `data/` for smaller input and summary files
 
 ## Path Note
-Copied notebooks/scripts were patched so references to `/banach2/wes/locat-0.1` now point to the bundled `locat-0.1` snapshot via a relative path. Other large absolute data paths were not fully rewritten because the corresponding large files are not bundled in this repo.
+Copied notebooks/scripts now expect `locat-0.1` to be available separately at `/banach2/wes/locat-0.1`. Notebook-adjacent support files were moved into `support_files/` subfolders to keep the analytical notebooks and scripts visually clean.
