@@ -4,7 +4,7 @@ This repo was cleaned so it does not depend on Wes's personal absolute paths.
 
 The notebooks and scripts now expect only:
 - paths relative to this repo, and
-- a separate `locat-0.1` checkout, provided either by `LOCAT01_PATH` or by placing `locat-0.1` next to this repo.
+- a separate `locat-0.1` path to the clone/install of the KlugerLab Locat directory, provided either by `LOCAT01_PATH` or by placing `locat-0.1` next to this repo.
 
 ## Recommended Local Layout
 
