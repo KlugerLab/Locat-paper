@@ -77,3 +77,13 @@ source_path,repo_path,size_bytes,status,reason
 /banach1/wes/LM_Sharing/data/dermal_erez/upper_dermal_E14.5_WT_data_cell_type_labels.txt,data/upper_dermal_E14.5_WT_data_cell_type_labels.txt,108605,included,added after follow-up audit of missing Dermal Condensate repro materials
 /banach2/wes/Locat/data/E145_dermal_erez_2026/E14.5_wls_dermal_CTL_metadata.csv,data/E145_dermal_erez_2026/E14.5_wls_dermal_CTL_metadata.csv,1108069,included,added after follow-up audit of missing Dermal Condensate repro materials
 /banach2/wes/Locat/data/E145_dermal_erez_2026/E14.5_wls_dermal_CTL_rawcount.csv,,361391072,excluded_large,361 MB raw count matrix; too large for standard GitHub repo
+/banach2/wes/Locat/notebooks/figures/Simulations/simulations-LMD_5_repro.ipynb,notebooks/figures/Simulations/simulations-LMD_5_repro.ipynb,35785,included,added after full audit of skipped simulation repro notebooks
+/banach2/wes/Locat/notebooks/figures/Simulations/simulations-gspa_4_repro.ipynb,notebooks/figures/Simulations/simulations-gspa_4_repro.ipynb,63020,included,added after full audit of skipped simulation repro notebooks
+/banach2/wes/Locat/notebooks/figures/Simulations/method_comp_1.h5ad,notebooks/figures/Simulations/method_comp_1.h5ad,11455416,included,added after full audit of skipped simulation repro notebooks
+/banach2/wes/Locat/notebooks/figures/Simulations/method_comp_2.h5ad,notebooks/figures/Simulations/method_comp_2.h5ad,11455416,included,added after full audit of skipped simulation repro notebooks
+/banach2/wes/Locat/notebooks/figures/Simulations/LMD_output_depl_comp_repro.pkl,notebooks/figures/Simulations/LMD_output_depl_comp_repro.pkl,23195,included,added after full audit of skipped simulation repro notebooks
+/banach2/wes/Locat/notebooks/figures/Simulations/LMD_output_subs_comp_repro.pkl,notebooks/figures/Simulations/LMD_output_subs_comp_repro.pkl,24495,included,added after full audit of skipped simulation repro notebooks
+/banach2/wes/Locat/notebooks/figures/Simulations/LMD_output_comp1_repro.npz,,,missing_in_source,referenced by repro notebook but not present in current working tree
+/banach2/wes/Locat/notebooks/figures/Simulations/LMD_output_comp2_repro.npz,,,missing_in_source,referenced by repro notebook but not present in current working tree
+/banach2/wes/Locat/notebooks/figures/Simulations/gspa_output_comp1_repro.npz,,,missing_in_source,referenced by repro notebook but not present in current working tree
+/banach2/wes/Locat/notebooks/figures/Simulations/gspa_output_comp2_repro.npz,,,missing_in_source,referenced by repro notebook but not present in current working tree
