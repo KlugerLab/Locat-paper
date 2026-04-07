@@ -1,0 +1,11 @@
+#scanpy
+#loguru
+#jax<0.7
+# tensorflow_probability does not work with jax>=0.7
+# - https://github.com/tensorflow/probability/issues/1994)
+# AttributeError: jax.interpreters.xla.pytype_aval_mappings was deprecated in JAX v0.5.0 and removed in JAX v0.7.0. jax.core.pytype_aval_mappings can be used as a replacement in most cases.
+#tensorflow_probability
+#harmonypy<0.1 # see https://github.com/scverse/scanpy/issues/3940
+locat==0.1.5
+pytest
+ipywidgets
