@@ -1,6 +1,5 @@
-# Locat-paper-repro-private
+# Locat-paper
 
-This private staging repo starts from the public `KlugerLab/Locat-paper` repository and adds the updated reproducibility materials that use `locat-0.1`.
 
 ## Included
 - `locat-0.1` should be available separately and can be pointed to with the `LOCAT01_PATH` environment variable
