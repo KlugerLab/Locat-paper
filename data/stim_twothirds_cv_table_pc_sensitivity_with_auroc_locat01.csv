@@ -1,0 +1,5 @@
+metric,pcs4__vs__pcs8,pcs4__vs__pcs12,pcs4__vs__bipca_umap2d,pcs8__vs__pcs12,pcs8__vs__bipca_umap2d,pcs12__vs__bipca_umap2d
+AUROC (all genes; $-\log_{10} p$),0.934 $\pm$ 0.014,0.921 $\pm$ 0.030,0.933 $\pm$ 0.016,0.964 $\pm$ 0.017,0.975 $\pm$ 0.009,0.951 $\pm$ 0.024
+Spearman rho (top 200),0.778 $\pm$ 0.035,0.684 $\pm$ 0.057,0.758 $\pm$ 0.047,0.761 $\pm$ 0.067,0.802 $\pm$ 0.038,0.748 $\pm$ 0.040
+Spearman rho (top 500),0.673 $\pm$ 0.026,0.592 $\pm$ 0.031,0.685 $\pm$ 0.073,0.721 $\pm$ 0.017,0.772 $\pm$ 0.034,0.682 $\pm$ 0.040
+Jaccard overlap (significant genes),0.526 $\pm$ 0.029,0.435 $\pm$ 0.046,0.561 $\pm$ 0.035,0.703 $\pm$ 0.047,0.721 $\pm$ 0.010,0.624 $\pm$ 0.055
