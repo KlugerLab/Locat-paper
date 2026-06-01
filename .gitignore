@@ -1,0 +1,19 @@
+# Large data files
+*.h5ad
+*.h5
+*.loom
+
+# Per-seed score outputs (large npz arrays)
+notebooks/figures/Perturb_PBMC/celltype_specificity_comparison/scores/seed_*/
+notebooks/figures/Perturb_PBMC/celltype_specificity_comparison/scores/logs/
+
+# Single-run score files (reproducible, not needed in repo)
+notebooks/figures/Perturb_PBMC/celltype_specificity_comparison/*_scores.npz
+notebooks/figures/Perturb_PBMC/celltype_specificity_comparison/*_scores_hvg.npz
+notebooks/figures/Perturb_PBMC/celltype_specificity_comparison/bootstrap_results.npy
+
+# Logs and checkpoints
+*.log
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
