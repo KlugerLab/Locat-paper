@@ -4,13 +4,13 @@
 *.loom
 
 # Per-seed score outputs (large npz arrays)
-notebooks/figures/Perturb_PBMC/celltype_specificity_comparison/scores/seed_*/
-notebooks/figures/Perturb_PBMC/celltype_specificity_comparison/scores/logs/
+notebooks/figures/FigS1_3kPBMC/celltype_specificity_comparison/scores/seed_*/
+notebooks/figures/FigS1_3kPBMC/celltype_specificity_comparison/scores/logs/
 
 # Single-run score files (reproducible, not needed in repo)
-notebooks/figures/Perturb_PBMC/celltype_specificity_comparison/*_scores.npz
-notebooks/figures/Perturb_PBMC/celltype_specificity_comparison/*_scores_hvg.npz
-notebooks/figures/Perturb_PBMC/celltype_specificity_comparison/bootstrap_results.npy
+notebooks/figures/FigS1_3kPBMC/celltype_specificity_comparison/*_scores.npz
+notebooks/figures/FigS1_3kPBMC/celltype_specificity_comparison/*_scores_hvg.npz
+notebooks/figures/FigS1_3kPBMC/celltype_specificity_comparison/bootstrap_results.npy
 
 # Logs and checkpoints
 *.log

@@ -1,6 +1,6 @@
 """Aggregate multi-seed results and generate bar chart with 95% CI."""
 import os, sys
-os.chdir("/banach2/wes/Locat-paper-repro-private/notebooks/figures/Perturb_PBMC/celltype_specificity_comparison")
+os.chdir("/banach2/wes/Locat-paper-repro-private/notebooks/figures/FigS1_3kPBMC/celltype_specificity_comparison")
 sys.path.insert(0, "/banach2/wes/locat-0.1")
 import matplotlib
 matplotlib.use("Agg")
