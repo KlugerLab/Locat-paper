@@ -228,7 +228,7 @@ for ax, k in zip(axes, CUTOFFS):
     sns.despine(ax=ax)
 
 fig.suptitle(f"DermalC — Bootstrap comparison (n={args.n_boot} resamples)\n"
-             "Mean τ ± 95% CI, Option B (≥5% expressing genes)",
+             "Mean τ ± 95% CI (≥5% expressing genes)",
              y=1.02, fontsize=12)
 plt.tight_layout()
 plt.savefig(HERE / "bootstrap_mean_tau.svg", bbox_inches="tight")

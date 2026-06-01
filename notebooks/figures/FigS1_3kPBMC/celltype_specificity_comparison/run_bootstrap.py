@@ -170,7 +170,7 @@ for ax, k in zip(axes, CUTOFFS):
                 fmt="none", color="black", capsize=4, linewidth=1.5, zorder=3)
 
     ax.set_title(f"Top-{k} genes")
-    ax.set_ylabel("Mean τ (Option B: ≥5% expressed)" if ax == axes[0] else "")
+    ax.set_ylabel("Mean τ (≥5% expressed)" if ax == axes[0] else "")
     ax.tick_params(axis="x", rotation=30)
     for bar, row in zip(bars, sub.itertuples()):
         ax.text(bar.get_x() + bar.get_width() / 2,
@@ -180,7 +180,7 @@ for ax, k in zip(axes, CUTOFFS):
 
 fig.suptitle(
     f"Bootstrap comparison (n={args.n_boot} resamples)\n"
-    "Mean τ ± 95% CI, Option B (≥5% expressing genes)",
+    "Mean τ ± 95% CI (≥5% expressing genes)",
     y=1.02, fontsize=12
 )
 plt.tight_layout()
