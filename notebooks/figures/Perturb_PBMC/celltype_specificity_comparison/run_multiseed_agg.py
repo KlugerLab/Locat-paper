@@ -35,7 +35,7 @@ def load_seed(seed_dir):
     f = seed_dir / "locat_scores.npz"
     if f.exists():
         x = np.load(f, allow_pickle=True)
-        d["LOCAT"] = pd.Series(x["pval"], index=x["gene_names"]).sort_values().index.tolist()
+        d["Locat"] = pd.Series(x["pval"], index=x["gene_names"]).sort_values().index.tolist()
     f = seed_dir / "gspa_scores.npz"
     if f.exists():
         x = np.load(f, allow_pickle=True)
@@ -81,7 +81,7 @@ for k in CUTOFFS:
     print(agg.round(4).to_string())
 
 colors = {
-    "LOCAT":    "#e6194b",
+    "Locat":    "#e6194b",
     "GSPA":     "#3cb44b",
     "LMD":      "#4363d8",
     "Hotspot":  "#f58231",

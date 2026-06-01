@@ -131,7 +131,7 @@ gene_to_idx = {g: i for i, g in enumerate(adata.var_names)}
 
 rankings = {}
 x = np.load(SCORES / "locat_scores.npz", allow_pickle=True)
-rankings["LOCAT"] = pd.Series(x["pval"], index=x["gene_names"]).sort_values().index.tolist()
+rankings["Locat"] = pd.Series(x["pval"], index=x["gene_names"]).sort_values().index.tolist()
 x = np.load(SCORES / "gspa_scores.npz", allow_pickle=True)
 rankings["GSPA"] = pd.Series(x["gene_localization"], index=x["var_names"]).sort_values(ascending=False).index.tolist()
 x = np.load(SCORES / "lmd_scores.npz", allow_pickle=True)
@@ -207,7 +207,7 @@ for k in CUTOFFS:
         print(f"  {row['method']:<10}  {row['mean']:.4f}  [{row['ci_lo']:.4f}, {row['ci_hi']:.4f}]")
 
 # ── Plot ──────────────────────────────────────────────────────────────────────
-colors = {"LOCAT": "#e6194b", "GSPA": "#3cb44b", "LMD": "#4363d8",
+colors = {"Locat": "#e6194b", "GSPA": "#3cb44b", "LMD": "#4363d8",
           "Hotspot": "#f58231", "Haystack": "#911eb4"}
 
 fig, axes = plt.subplots(1, len(CUTOFFS), figsize=(5 * len(CUTOFFS), 5), sharey=False)

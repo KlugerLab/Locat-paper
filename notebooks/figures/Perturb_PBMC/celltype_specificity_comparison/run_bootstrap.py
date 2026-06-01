@@ -45,7 +45,7 @@ print("Loading rankings...", flush=True)
 rankings = {}
 
 x = np.load(SCORES_DIR / "locat_scores.npz", allow_pickle=True)
-rankings["LOCAT"] = pd.Series(x["pval"], index=x["gene_names"]).sort_values().index.tolist()
+rankings["Locat"] = pd.Series(x["pval"], index=x["gene_names"]).sort_values().index.tolist()
 
 x = np.load(SCORES_DIR / "gspa_scores.npz", allow_pickle=True)
 rankings["GSPA"] = pd.Series(x["gene_localization"], index=x["var_names"]).sort_values(ascending=False).index.tolist()
@@ -147,7 +147,7 @@ print(f"\nSaved bootstrap_results.npy and bootstrap_summary.csv", flush=True)
 
 # ── Plot ──────────────────────────────────────────────────────────────────────
 colors = {
-    "LOCAT":    "#e6194b",
+    "Locat":    "#e6194b",
     "GSPA":     "#3cb44b",
     "LMD":      "#4363d8",
     "Hotspot":  "#f58231",
