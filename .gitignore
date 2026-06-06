@@ -12,6 +12,9 @@ notebooks/figures/FigS1_3kPBMC/celltype_specificity_comparison/*_scores.npz
 notebooks/figures/FigS1_3kPBMC/celltype_specificity_comparison/*_scores_hvg.npz
 notebooks/figures/FigS1_3kPBMC/celltype_specificity_comparison/bootstrap_results.npy
 
+# Per-boot score files from subsample bootstrap (reproducible from raw.npy)
+notebooks/figures/**/subsample_bootstrap/boot_*/
+
 # Logs and checkpoints
 *.log
 __pycache__/

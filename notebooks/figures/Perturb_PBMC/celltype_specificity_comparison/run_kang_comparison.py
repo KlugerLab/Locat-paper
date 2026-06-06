@@ -52,10 +52,8 @@ def compute_tau(adata):
     X = adata.X.toarray() if sp.issparse(adata.X) else np.asarray(adata.X, dtype=np.float32)
     cts = adata.obs[CELLTYPE_COL].cat.categories.tolist()
     mean = np.array([X[adata.obs[CELLTYPE_COL] == ct].mean(axis=0) for ct in cts])
-    pct  = (X > 0).mean(axis=0)
     rs   = mean.sum(axis=0)
-    mask = (rs > 0) & (pct >= 0.05)
-    tau  = np.where(mask, mean.max(axis=0) / np.where(rs > 0, rs, 1.0), np.nan)
+    tau  = np.where(rs > 0, mean.max(axis=0) / rs, np.nan)
     return pd.Series(tau, index=adata.var_names)
 
 def make_barplot(tau, rankings, cutoffs, svg_path, title):
@@ -121,11 +119,14 @@ def run_condition(condition):
     adata_full = sc.read_h5ad(DATA_PATH)
     adata = adata_full[adata_full.obs[CONDITION_COL] == condition].copy()
 
-    # filter genes ≥5% expressed
+    # normalize: library-size normalize then log1p (raw counts → log-normalized)
+    sc.pp.normalize_total(adata, target_sum=1e4)
+    sc.pp.log1p(adata)
+
+    # filter to genes expressed in ≥5% of cells in this condition
     pct = (adata.X.toarray() if sp.issparse(adata.X) else np.asarray(adata.X)) > 0
-    gene_mask = pct.mean(axis=0) >= 0.05
-    adata = adata[:, gene_mask].copy()
-    log(f"  {adata.n_obs} cells × {adata.n_vars} genes after ≥5% filter")
+    adata = adata[:, pct.mean(axis=0) >= 0.05].copy()
+    log(f"  {adata.n_obs} cells × {adata.n_vars} genes after normalization + ≥5% filter")
     log(f"  Cell types: {adata.obs[CELLTYPE_COL].value_counts().to_dict()}")
 
     # ensure cell_type is categorical
