@@ -1,11 +1,13 @@
 """
-Subsample bootstrap comparison: 6-8 draws of 70% cells without replacement.
-For each subsample, run all 5 methods, compute mean tau at top-k cutoffs.
-Generate barplot with 95% CI and significance vs Locat.
+Resampling comparison of 5 gene localization methods.
+
+Two modes:
+  Subsampling (default): 70% of cells without replacement
+  Bootstrap (--replace):  full dataset with replacement (true bootstrap)
 
 Usage:
     python run_subsample_bootstrap.py --dataset pbmc3k [--n_boot 8] [--frac 0.7] [--gpu 0]
-    python run_subsample_bootstrap.py --dataset dermalc [--n_boot 6] [--frac 0.7] [--gpu 0]
+    python run_subsample_bootstrap.py --dataset pbmc3k --replace [--n_boot 10] [--gpu 0]
 """
 import argparse, os, sys, subprocess, time, tempfile
 from pathlib import Path
@@ -24,6 +26,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--dataset", required=True, choices=["pbmc3k", "dermalc", "kang_stim", "kang_ctrl"])
 parser.add_argument("--n_boot", type=int, default=None)
 parser.add_argument("--frac",   type=float, default=0.7)
+parser.add_argument("--replace", action="store_true", help="Bootstrap with replacement at full dataset size")
 parser.add_argument("--gpu",    type=str, default="0")
 args = parser.parse_args()
 
@@ -40,29 +43,34 @@ KANG_RAW    = Path("/banach2/wes/Locat-paper-repro-private/data/kang_counts_25k.
 KANG_OUTDIR = Path("/banach2/wes/Locat-paper-repro-private/notebooks/figures/Perturb_PBMC/celltype_specificity_comparison")
 NORMALIZE   = False  # set True for datasets that need normalization
 
+_boot_tag = "bootstrap_replacement" if args.replace else "subsample_bootstrap"
+
 if args.dataset == "pbmc3k":
-    DATA_PATH    = Path("/banach2/wes/Locat-paper-repro-private/data/pbmc3k_9543_lognorm.h5ad")
-    CELLTYPE_COL = "louvain"
-    CUTOFFS      = [100, 200, 400]
-    OUT_DIR      = Path("/banach2/wes/Locat-paper-repro-private/notebooks/figures/FigS1_3kPBMC/celltype_specificity_comparison")
-    N_BOOT       = args.n_boot or 8
-    TITLE_PREFIX = "PBMC3k"
+    DATA_PATH      = Path("/banach2/wes/Locat-paper-repro-private/data/pbmc3k_9543_lognorm.h5ad")
+    CELLTYPE_COL   = "louvain"
+    CUTOFFS        = [100, 200, 400]
+    OUT_DIR        = Path("/banach2/wes/Locat-paper-repro-private/notebooks/figures/FigS1_3kPBMC/celltype_specificity_comparison") / _boot_tag
+    N_BOOT         = args.n_boot or (10 if args.replace else 8)
+    TITLE_PREFIX   = "PBMC3k"
+    TAU_PCT_THRESH = 0.05   # ≥5% expressing for τ
 elif args.dataset == "dermalc":
-    DATA_PATH    = Path("/banach2/wes/Locat/data/E145_dermal_erez_2026/dc_adata_proc.h5ad")
-    CELLTYPE_COL = "celltype"
-    CUTOFFS      = [50, 100, 200]
-    OUT_DIR      = Path("/banach2/wes/Locat-paper-repro-private/notebooks/figures/Fig2_Dermal_Condensate/celltype_specificity_comparison")
-    N_BOOT       = args.n_boot or 6
-    TITLE_PREFIX = "DermalC"
+    DATA_PATH      = Path("/banach2/wes/Locat/data/E145_dermal_erez_2026/dc_adata_proc.h5ad")
+    CELLTYPE_COL   = "celltype"
+    CUTOFFS        = [50, 100, 200]
+    OUT_DIR        = Path("/banach2/wes/Locat-paper-repro-private/notebooks/figures/Fig2_Dermal_Condensate/celltype_specificity_comparison") / _boot_tag
+    N_BOOT         = args.n_boot or (10 if args.replace else 6)
+    TITLE_PREFIX   = "DermalC"
+    TAU_PCT_THRESH = 0.05   # ≥5% expressing for τ
 elif args.dataset in ("kang_stim", "kang_ctrl"):
-    CONDITION    = args.dataset.split("_")[1]   # "stim" or "ctrl"
-    DATA_PATH    = None   # loaded specially below
-    CELLTYPE_COL = "cell_type"
-    CUTOFFS      = [100, 200, 400]
-    OUT_DIR      = KANG_OUTDIR / f"subsample_bootstrap_{CONDITION}"
-    N_BOOT       = args.n_boot or 6
-    NORMALIZE    = True
-    TITLE_PREFIX = f"Kang {CONDITION.capitalize()}"
+    CONDITION      = args.dataset.split("_")[1]   # "stim" or "ctrl"
+    DATA_PATH      = None   # loaded specially below
+    CELLTYPE_COL   = "cell_type"
+    CUTOFFS        = [100, 200, 400]
+    OUT_DIR        = KANG_OUTDIR / f"{_boot_tag}_{CONDITION}"
+    N_BOOT         = args.n_boot or (10 if args.replace else 6)
+    NORMALIZE      = True
+    TITLE_PREFIX   = f"Kang {CONDITION.capitalize()}"
+    TAU_PCT_THRESH = 0.0    # genes already pre-filtered to n_cells≥100; no extra pct cut
 
 if str(LOCAT_SRC) not in sys.path:
     sys.path.insert(0, str(LOCAT_SRC))
@@ -84,7 +92,7 @@ def compute_tau(adata):
     mean = np.array([X[adata.obs[CELLTYPE_COL] == ct].mean(axis=0) for ct in cts])
     pct  = (X > 0).mean(axis=0)
     rs   = mean.sum(axis=0)
-    mask = (rs > 0) & (pct >= 0.05)
+    mask = (rs > 0) & (pct >= TAU_PCT_THRESH)
     tau  = np.where(mask, mean.max(axis=0) / np.where(rs > 0, rs, 1.0), np.nan)
     return pd.Series(tau, index=adata.var_names)
 
@@ -135,18 +143,24 @@ def run_one_boot(adata_sub, boot_idx, seed):
     rankings["GSPA"] = pd.Series(x["gene_localization"], index=x["var_names"]).sort_values(ascending=False).index.tolist()
 
     # ── LMD ────────────────────────────────────────────────────────────────────
+    # With-replacement bootstrap can create duplicate-cell KNN artifacts that crash LMD's
+    # igraph traversal ("Unknown vertex selected"). Skip and record NaN for that boot.
     lmd_out = boot_dir / "lmd_scores.npz"
-    subprocess.run(
-        [LMD_PYTHON, str(LMD_SCRIPT),
-         "--data_path", str(tmp), "--out_path", str(lmd_out)],
-        env={**os.environ,
-             "R_HOME": "/banach2/wes/envs/lmd_rpy2/lib/R",
-             "R_DEFAULT_PACKAGES": "base,utils,stats,graphics,grDevices,methods",
-             "CUDA_VISIBLE_DEVICES": ""},
-        check=True,
-    )
-    x = np.load(lmd_out, allow_pickle=True)
-    rankings["LMD"] = pd.Series(x["lmd_score"], index=x["var_names"]).sort_values().index.tolist()
+    try:
+        subprocess.run(
+            [LMD_PYTHON, str(LMD_SCRIPT),
+             "--data_path", str(tmp), "--out_path", str(lmd_out)],
+            env={**os.environ,
+                 "R_HOME": "/banach2/wes/envs/lmd_rpy2/lib/R",
+                 "R_DEFAULT_PACKAGES": "base,utils,stats,graphics,grDevices,methods",
+                 "CUDA_VISIBLE_DEVICES": ""},
+            check=True,
+        )
+        x = np.load(lmd_out, allow_pickle=True)
+        rankings["LMD"] = pd.Series(x["lmd_score"], index=x["var_names"]).sort_values().index.tolist()
+    except subprocess.CalledProcessError as e:
+        log(f"  WARNING: LMD failed (boot {boot_idx}), skipping — {e}")
+        rankings["LMD"] = []
 
     # ── Hotspot ────────────────────────────────────────────────────────────────
     import hotspot as hs_pkg
@@ -221,8 +235,10 @@ def make_plots(all_tau_means, cutoffs, title_prefix):
                     f"{row.mean:.3f}", ha="center", va="bottom", fontsize=8)
 
         ax.set_ylabel("Mean τ (≥5% expressed)")
-        ax.set_title(f"{title_prefix} — Top-{k} genes\n"
-                     f"Mean τ ± 95% CI ({N_BOOT} subsamples, {int(args.frac*100)}% cells)")
+        _ci_desc = (f"{N_BOOT} bootstrap resamples, w/ replacement"
+                    if args.replace else
+                    f"{N_BOOT} subsamples, {int(args.frac*100)}% cells w/o replacement")
+        ax.set_title(f"{title_prefix} — Top-{k} genes\nMean τ ± 95% CI ({_ci_desc})")
         ax.tick_params(axis="x", rotation=30)
         sns.despine(ax=ax)
         plt.tight_layout()
@@ -235,30 +251,32 @@ def make_plots(all_tau_means, cutoffs, title_prefix):
         df.drop(columns=["vals"]).to_csv(OUT_DIR / f"subsample_bootstrap_summary_top{k}.csv", index=False)
 
 # ── Main ───────────────────────────────────────────────────────────────────────
-log(f"Dataset: {args.dataset}  n_boot={N_BOOT}  frac={args.frac}")
+_mode_str = "bootstrap w/ replacement (n=N)" if args.replace else f"subsampling {int(args.frac*100)}% w/o replacement"
+log(f"Dataset: {args.dataset}  n_boot={N_BOOT}  mode={_mode_str}")
 if args.dataset in ("kang_stim", "kang_ctrl"):
     raw = sc.read_h5ad(KANG_RAW)
     adata_full = raw[raw.obs["label"] == CONDITION].copy()
     sc.pp.normalize_total(adata_full, target_sum=1e4)
     sc.pp.log1p(adata_full)
-    pct_all = (adata_full.X.toarray() if sp.issparse(adata_full.X) else np.asarray(adata_full.X)) > 0
-    adata_full = adata_full[:, pct_all.mean(axis=0) >= 0.05].copy()
-    log(f"  Kang {CONDITION}: {adata_full.n_obs} cells × {adata_full.n_vars} genes after norm + ≥5% filter")
+    expr_all = (adata_full.X.toarray() if sp.issparse(adata_full.X) else np.asarray(adata_full.X)) > 0
+    adata_full = adata_full[:, expr_all.sum(axis=0) >= 100].copy()
+    log(f"  Kang {CONDITION}: {adata_full.n_obs} cells × {adata_full.n_vars} genes after norm + n_cells≥100 filter")
 else:
     adata_full = sc.read_h5ad(DATA_PATH)
 adata_full.obs[CELLTYPE_COL] = pd.Categorical(adata_full.obs[CELLTYPE_COL])
 n_cells = adata_full.n_obs
-n_sub   = int(n_cells * args.frac)
-log(f"Full dataset: {n_cells} cells × {adata_full.n_vars} genes → subsampling {n_sub} cells each run")
 
 rng = np.random.default_rng(42)
 all_tau_means = {m: {k: [] for k in CUTOFFS} for m in METHOD_ORDER}
+
+n_sub = n_cells if args.replace else int(n_cells * args.frac)
+log(f"Full dataset: {n_cells} cells × {adata_full.n_vars} genes → drawing {n_sub} cells each run (replace={args.replace})")
 
 for b in range(N_BOOT):
     log(f"\n--- Bootstrap {b+1}/{N_BOOT} ---")
     t0 = time.time()
 
-    idx = rng.choice(n_cells, size=n_sub, replace=False)
+    idx = rng.choice(n_cells, size=n_sub, replace=args.replace)
     adata_sub = adata_full[idx].copy()
     adata_sub.obs[CELLTYPE_COL] = pd.Categorical(adata_sub.obs[CELLTYPE_COL])
 
