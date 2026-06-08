@@ -131,22 +131,21 @@ for ds in DATASETS:
         # ── Plot ─────────────────────────────────────────────────────────────
         fig, ax = plt.subplots(figsize=(7, 5))
 
-        # positions: 0=all genes, then methods
-        positions = list(range(len(sorted_methods) + 1))
-        all_data  = [tau_all] + [boot_vals[m] for m in sorted_methods]
-        all_colors = [ALL_COLOR] + [COLORS[m] for m in sorted_methods]
-        all_labels = [f"All genes\n(n={len(tau_all)})"] + sorted_methods
+        # methods first, all-genes last
+        positions  = list(range(len(sorted_methods) + 1))
+        all_data   = [boot_vals[m] for m in sorted_methods] + [tau_all]
+        all_colors = [COLORS[m] for m in sorted_methods] + [ALL_COLOR]
+        all_labels = sorted_methods + [f"All genes\n(n={len(tau_all)})"]
 
         bp = ax.boxplot(
             all_data,
             positions=positions,
             patch_artist=True,
             widths=0.55,
-            showfliers=[False] + [True] * len(sorted_methods),
+            showfliers=False,   # never show outlier circles
             medianprops=dict(color="black", linewidth=2),
             whiskerprops=dict(linewidth=1.2),
             capprops=dict(linewidth=1.2),
-            flierprops=dict(marker="o", markersize=3, alpha=0.4, linestyle="none"),
         )
         for patch, c in zip(bp["boxes"], all_colors):
             patch.set_facecolor(c)
@@ -159,8 +158,8 @@ for ds in DATASETS:
                      f"Bootstrap w/ replacement (n=10 boots)")
 
         # ── significance bracket: Locat vs next-best ──────────────────────
-        locat_pos  = positions[sorted_methods.index("Locat") + 1]
-        other_pos  = positions[sorted_methods.index(best_other) + 1]
+        locat_pos  = positions[sorted_methods.index("Locat")]
+        other_pos  = positions[sorted_methods.index(best_other)]
         locat_top  = np.max(boot_vals["Locat"]) if len(boot_vals["Locat"]) else lv.mean()
         other_top  = np.max(boot_vals[best_other]) if len(boot_vals[best_other]) else bv.mean()
         y_bracket  = max(locat_top, other_top) + 0.03
@@ -177,7 +176,7 @@ for ds in DATASETS:
         for i, m in enumerate(sorted_methods):
             v = boot_vals[m]
             if len(v) > 0:
-                ax.text(i + 1, v.mean(), f"{v.mean():.3f}",
+                ax.text(i, v.mean(), f"{v.mean():.3f}",
                         ha="center", va="bottom", fontsize=7, color="black",
                         bbox=dict(fc="white", ec="none", pad=0.5, alpha=0.7))
 
