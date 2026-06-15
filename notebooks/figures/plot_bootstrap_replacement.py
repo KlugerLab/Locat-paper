@@ -37,7 +37,7 @@ DATASETS = [
         tau_pct_thresh=0.05,
     ),
     dict(
-        name="DermalC",
+        name="Dermal Condensates",
         raw_npy=HERE / "Fig2_Dermal_Condensate/celltype_specificity_comparison/bootstrap_replacement/subsample_bootstrap_raw.npy",
         out_dir=HERE / "Fig2_Dermal_Condensate/celltype_specificity_comparison/bootstrap_replacement",
         data_path=Path("/banach2/wes/Locat/data/E145_dermal_erez_2026/dc_adata_proc.h5ad"),

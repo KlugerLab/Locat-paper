@@ -44,7 +44,7 @@ DATASETS = [
         gene_filter=None,
     ),
     dict(
-        name="DermalC",
+        name="Dermal Condensates",
         scores_dir=HERE / "Fig2_Dermal_Condensate/celltype_specificity_comparison/scores",
         out_dir=HERE / "Fig2_Dermal_Condensate/celltype_specificity_comparison/real_dataset",
         data_path=Path("/banach2/wes/Locat/data/E145_dermal_erez_2026/dc_adata_proc.h5ad"),
@@ -154,9 +154,9 @@ for ds in DATASETS:
 
         ax.set_xticks(x_pos)
         ax.set_xticklabels(df["method"], fontsize=9)
-        ax.set_ylabel("Mean τ (cell-type specificity)")
+        ax.set_ylabel("Mean S (cell-type specificity)")
         ax.set_title(f"{ds['name']} — Top-{k} genes (single run)\n"
-                     f"Mean τ ± 95% CI  (CI = 1.96 × SD/√k,  k={k})")
+                     f"Mean S ± 95% CI  (CI = 1.96 × SD/√k,  k={k})")
 
         # legend for all-genes band
         from matplotlib.patches import Patch
