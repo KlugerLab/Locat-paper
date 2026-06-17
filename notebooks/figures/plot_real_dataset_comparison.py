@@ -25,9 +25,9 @@ import scanpy as sc
 
 HERE = Path(__file__).parent
 
-METHOD_ORDER = ["Locat", "GSPA", "LMD", "Haystack", "Hotspot"]
+METHOD_ORDER = ["Locat", "GSPA", "LMD", "Haystack", "Hotspot", "SpectralRH"]
 COLORS = {"Locat": "#e6194b", "GSPA": "#3cb44b", "LMD": "#4363d8",
-          "Hotspot": "#f58231", "Haystack": "#911eb4"}
+          "Hotspot": "#f58231", "Haystack": "#911eb4", "SpectralRH": "#42d4f4"}
 ALL_COLOR = "#cccccc"
 CUTOFFS = [50, 100, 200]
 
@@ -90,6 +90,12 @@ def load_rankings(scores_dir):
     rankings["Hotspot"]  = pd.Series(x["fdr"],               index=x["var_names"]).sort_values().index.tolist()
     x = np.load(scores_dir / "haystack_scores.npz", allow_pickle=True)
     rankings["Haystack"] = pd.Series(x["logpval"],           index=x["var_names"]).sort_values().index.tolist()
+    srh_path = scores_dir / "spectralrh_scores.npz"
+    if srh_path.exists():
+        x = np.load(srh_path, allow_pickle=True)
+        rankings["SpectralRH"] = pd.Series(x["hr_avg_sizenull"], index=x["var_names"]).sort_values().index.tolist()
+    else:
+        rankings["SpectralRH"] = []
     return rankings
 
 def compute_tau(adata, celltype_col, pct_thresh):

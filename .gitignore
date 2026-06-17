@@ -5,6 +5,7 @@
 
 # Per-seed score outputs (large npz arrays)
 notebooks/figures/FigS1_3kPBMC/celltype_specificity_comparison/scores/seed_*/
+!notebooks/figures/FigS1_3kPBMC/celltype_specificity_comparison/scores/seed_0/spectralrh_scores.npz
 notebooks/figures/FigS1_3kPBMC/celltype_specificity_comparison/scores/logs/
 
 # Single-run score files (reproducible, not needed in repo)
