@@ -25,9 +25,10 @@ import scanpy as sc
 
 HERE = Path(__file__).parent
 
-METHOD_ORDER = ["Locat", "GSPA", "LMD", "Haystack", "Hotspot", "SpectralRH"]
+METHOD_ORDER = ["Locat", "GSPA", "LMD", "Haystack", "Hotspot", "SpectralRH", "GiniClust"]
 COLORS = {"Locat": "#e6194b", "GSPA": "#3cb44b", "LMD": "#4363d8",
-          "Hotspot": "#f58231", "Haystack": "#911eb4", "SpectralRH": "#42d4f4"}
+          "Hotspot": "#f58231", "Haystack": "#911eb4", "SpectralRH": "#42d4f4",
+          "GiniClust": "#bfef45"}
 ALL_COLOR = "#cccccc"
 CUTOFFS = [50, 100, 200]
 
@@ -96,6 +97,13 @@ def load_rankings(scores_dir):
         rankings["SpectralRH"] = pd.Series(x["hr_avg_sizenull"], index=x["var_names"]).sort_values().index.tolist()
     else:
         rankings["SpectralRH"] = []
+    gini_path = scores_dir / "giniclust_scores.npz"
+    if gini_path.exists():
+        x = np.load(gini_path, allow_pickle=True)
+        # higher gini_score = more unequal expression across cells = more specific
+        rankings["GiniClust"] = pd.Series(x["gini_score"], index=x["var_names"]).sort_values(ascending=False).index.tolist()
+    else:
+        rankings["GiniClust"] = []
     return rankings
 
 def compute_tau(adata, celltype_col, pct_thresh):
