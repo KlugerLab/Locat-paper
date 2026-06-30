@@ -25,10 +25,10 @@ import scanpy as sc
 
 HERE = Path(__file__).parent
 
-METHOD_ORDER = ["Locat", "GSPA", "LMD", "Haystack", "Hotspot", "SpectralRH", "GiniClust"]
+METHOD_ORDER = ["Locat", "GSPA", "LMD", "Haystack", "Hotspot", "SpectralRH", "GiniClust", "Scanpy"]
 COLORS = {"Locat": "#e6194b", "GSPA": "#3cb44b", "LMD": "#4363d8",
           "Hotspot": "#f58231", "Haystack": "#911eb4", "SpectralRH": "#42d4f4",
-          "GiniClust": "#bfef45"}
+          "GiniClust": "#bfef45", "Scanpy": "#f032e6"}
 ALL_COLOR = "#cccccc"
 CUTOFFS = [50, 100, 200]
 
@@ -104,6 +104,13 @@ def load_rankings(scores_dir):
         rankings["GiniClust"] = pd.Series(x["gini_score"], index=x["var_names"]).sort_values(ascending=False).index.tolist()
     else:
         rankings["GiniClust"] = []
+    scanpy_path = scores_dir / "scanpy_scores.npz"
+    if scanpy_path.exists():
+        x = np.load(scanpy_path, allow_pickle=True)
+        # lower pval_min = gene cleanly distinguishes at least one cluster = more specific
+        rankings["Scanpy"] = pd.Series(x["pval_min"], index=x["var_names"]).sort_values(ascending=True).index.tolist()
+    else:
+        rankings["Scanpy"] = []
     return rankings
 
 def compute_tau(adata, celltype_col, pct_thresh):
