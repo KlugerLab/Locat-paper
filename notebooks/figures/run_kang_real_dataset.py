@@ -63,7 +63,7 @@ t0 = time.time()
 from locat.locat import LOCAT
 embedding = adata.obsm["X_pca"].astype(np.float64)[:, :8]
 model = LOCAT(
-    adata=adata, cell_embedding=embedding, k=20, n_bootstrap_inits=50,
+    adata=adata, cell_embedding=embedding, k=20,
     show_progress=True, knn=adata.obsp["connectivities"], knn_mode="connectivity",
 )
 model._reg_covar = 1e-6

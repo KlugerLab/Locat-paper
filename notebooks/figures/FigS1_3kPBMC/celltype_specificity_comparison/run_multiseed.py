@@ -85,7 +85,6 @@ model = LOCAT(
     adata=adata,
     cell_embedding=embedding,
     k=20,
-    n_bootstrap_inits=50,
     show_progress=True,
     knn=adata.obsp["connectivities"],
     knn_mode="connectivity",
