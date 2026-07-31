@@ -1,7 +1,7 @@
 """Aggregate multi-seed results and generate bar chart with 95% CI."""
 import os, sys
-os.chdir("/banach2/wes/Locat-paper-repro-private/notebooks/figures/FigS1_3kPBMC/celltype_specificity_comparison")
-sys.path.insert(0, "/banach2/wes/locat-0.1")
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, "LOCAT01_PATH")
 import matplotlib
 matplotlib.use("Agg")
 
@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import scanpy as sc
 
-DATA_PATH = Path("/banach2/wes/Locat-paper-repro-private/data/pbmc3k_9543_lognorm.h5ad")
+DATA_PATH = Path(__file__).resolve().parents[4] / "data/pbmc3k_9543_lognorm.h5ad"
 OUT_DIR   = Path(".")
 SCORES_DIR = Path("scores")
 CUTOFFS = [100, 200, 400]

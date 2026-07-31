@@ -10,14 +10,14 @@ import scipy.sparse as sp
 import scanpy as sc
 
 HERE = Path(__file__).parent
-sys_path_locat = "/banach2/wes/locat-0.1"
+sys_path_locat = "LOCAT01_PATH"
 
 DATASETS = [
     dict(
         name="PBMC3k",
         raw_npy=HERE / "FigS1_3kPBMC/celltype_specificity_comparison/bootstrap_replacement/subsample_bootstrap_raw.npy",
         boot_dir=HERE / "FigS1_3kPBMC/celltype_specificity_comparison/bootstrap_replacement/subsample_bootstrap",
-        data_path=Path("/banach2/wes/Locat-paper-repro-private/data/pbmc3k_9543_lognorm.h5ad"),
+        data_path=Path(__file__).resolve().parents[2] / "data/pbmc3k_9543_lognorm.h5ad",
         celltype_col="louvain",
         normalize=False,
         condition=None,
@@ -28,7 +28,7 @@ DATASETS = [
         name="Kang Stim",
         raw_npy=HERE / "Perturb_PBMC/celltype_specificity_comparison/bootstrap_replacement_stim/subsample_bootstrap_raw.npy",
         boot_dir=HERE / "Perturb_PBMC/celltype_specificity_comparison/bootstrap_replacement_stim/subsample_bootstrap",
-        data_path=Path("/banach2/wes/Locat-paper-repro-private/data/kang_counts_25k.h5ad"),
+        data_path=Path(__file__).resolve().parents[2] / "data/kang_counts_25k.h5ad",
         celltype_col="cell_type",
         normalize=True,
         condition="stim",
@@ -39,7 +39,7 @@ DATASETS = [
         name="Kang Ctrl",
         raw_npy=HERE / "Perturb_PBMC/celltype_specificity_comparison/bootstrap_replacement_ctrl/subsample_bootstrap_raw.npy",
         boot_dir=HERE / "Perturb_PBMC/celltype_specificity_comparison/bootstrap_replacement_ctrl/subsample_bootstrap",
-        data_path=Path("/banach2/wes/Locat-paper-repro-private/data/kang_counts_25k.h5ad"),
+        data_path=Path(__file__).resolve().parents[2] / "data/kang_counts_25k.h5ad",
         celltype_col="cell_type",
         normalize=True,
         condition="ctrl",

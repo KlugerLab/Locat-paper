@@ -16,7 +16,7 @@ import pandas as pd
 import scipy.sparse as sp
 import scanpy as sc
 
-LOCAT_SRC = Path("/banach2/wes/Locat")
+LOCAT_SRC = Path("LOCAT01_PATH")
 if str(LOCAT_SRC) not in sys.path:
     sys.path.insert(0, str(LOCAT_SRC))
 
@@ -27,7 +27,7 @@ HERE = Path(__file__).parent
 DATASETS = [
     dict(
         name="PBMC3k",
-        data_path=Path("/banach2/wes/Locat-paper-repro-private/data/pbmc3k_9543_lognorm.h5ad"),
+        data_path=Path(__file__).resolve().parents[2] / "data/pbmc3k_9543_lognorm.h5ad",
         scores_dir=HERE / "FigS1_3kPBMC/celltype_specificity_comparison/scores/seed_0",
         celltype_col="louvain",
         normalize=False,
@@ -36,7 +36,7 @@ DATASETS = [
     ),
     dict(
         name="Dermal Condensates",
-        data_path=Path("/banach2/wes/Locat/data/E145_dermal_erez_2026/dc_adata_proc.h5ad"),
+        data_path=Path(__file__).resolve().parents[2] / "data/E145_dermal_erez_2026/dc_adata_proc.h5ad",
         scores_dir=HERE / "Fig2_Dermal_Condensate/celltype_specificity_comparison/scores",
         celltype_col="celltype",
         normalize=False,
@@ -45,7 +45,7 @@ DATASETS = [
     ),
     dict(
         name="Kang Stim",
-        data_path=Path("/banach2/wes/Locat-paper-repro-private/data/kang_counts_25k.h5ad"),
+        data_path=Path(__file__).resolve().parents[2] / "data/kang_counts_25k.h5ad",
         scores_dir=HERE / "Perturb_PBMC/celltype_specificity_comparison/real_dataset_n100_stim",
         celltype_col="cell_type",
         normalize=True,
@@ -54,7 +54,7 @@ DATASETS = [
     ),
     dict(
         name="Kang Ctrl",
-        data_path=Path("/banach2/wes/Locat-paper-repro-private/data/kang_counts_25k.h5ad"),
+        data_path=Path(__file__).resolve().parents[2] / "data/kang_counts_25k.h5ad",
         scores_dir=HERE / "Perturb_PBMC/celltype_specificity_comparison/real_dataset_n100_ctrl",
         celltype_col="cell_type",
         normalize=True,

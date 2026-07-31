@@ -24,15 +24,15 @@ args = parser.parse_args()
 os.environ["CUDA_VISIBLE_DEVICES"] = args.gpu
 
 HERE      = Path(__file__).parent
-LOCAT_SRC = Path("/banach2/wes/locat-0.1")
-DATA_PATH = Path("/banach2/wes/Locat/data/E145_dermal_erez_2026/dc_adata_proc.h5ad")
+LOCAT_SRC = Path("LOCAT01_PATH")
+DATA_PATH = Path(__file__).resolve().parents[4] / "data/E145_dermal_erez_2026/dc_adata_proc.h5ad"
 SCORES    = HERE / "scores"
 SCORES.mkdir(exist_ok=True)
 
-GSPA_PYTHON = "/banach2/wes/.conda/envs/gspa-env/bin/python"
-LMD_PYTHON  = "/banach2/wes/envs/lmd_rpy2/bin/python"
-LMD_SCRIPT  = Path("/banach2/wes/Locat-paper-repro-private/notebooks/figures/Perturb_PBMC/celltype_specificity_comparison/run_lmd_seeded.py")
-GSPA_SCRIPT = Path("/banach2/wes/Locat-paper-repro-private/notebooks/figures/Perturb_PBMC/celltype_specificity_comparison/run_gspa_seeded.py")
+GSPA_PYTHON = "GSPA_PYTHON"
+LMD_PYTHON  = "LMD_PYTHON"
+LMD_SCRIPT  = Path(__file__).resolve().parents[4] / "notebooks/figures/Perturb_PBMC/celltype_specificity_comparison/run_lmd_seeded.py"
+GSPA_SCRIPT = Path(__file__).resolve().parents[4] / "notebooks/figures/Perturb_PBMC/celltype_specificity_comparison/run_gspa_seeded.py"
 
 if str(LOCAT_SRC) not in sys.path:
     sys.path.insert(0, str(LOCAT_SRC))
@@ -94,7 +94,7 @@ subprocess.run(
      "--data_path", str(DATA_PATH),
      "--out_path",  str(SCORES / "lmd_scores.npz")],
     env={**os.environ,
-         "R_HOME": "/banach2/wes/envs/lmd_rpy2/lib/R",
+         "R_HOME": "LMD_R_HOME",
          "R_DEFAULT_PACKAGES": "base,utils,stats,graphics,grDevices,methods",
          "CUDA_VISIBLE_DEVICES": ""},
     check=True,

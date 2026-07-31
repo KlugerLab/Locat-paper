@@ -6,7 +6,7 @@
 
 set -euo pipefail
 HERE="$(cd "$(dirname "$0")" && pwd)"
-PYTHON=/banach2/wes/.conda/envs/mulde_jax/bin/python
+PYTHON=LOCAT_PYTHON
 LOG_DIR="$HERE/scores/logs"
 mkdir -p "$LOG_DIR"
 

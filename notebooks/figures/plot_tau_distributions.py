@@ -23,7 +23,7 @@ HERE = Path(__file__).parent
 DATASETS = [
     dict(
         name="PBMC3k",
-        data_path=Path("/banach2/wes/Locat-paper-repro-private/data/pbmc3k_9543_lognorm.h5ad"),
+        data_path=Path(__file__).resolve().parents[2] / "data/pbmc3k_9543_lognorm.h5ad",
         celltype_col="louvain",
         locat_scores=HERE / "FigS1_3kPBMC/celltype_specificity_comparison/scores/seed_0/locat_scores.npz",
         normalize=False,
@@ -31,7 +31,7 @@ DATASETS = [
     ),
     dict(
         name="DermalC",
-        data_path=Path("/banach2/wes/Locat/data/E145_dermal_erez_2026/dc_adata_proc.h5ad"),
+        data_path=Path(__file__).resolve().parents[2] / "data/E145_dermal_erez_2026/dc_adata_proc.h5ad",
         celltype_col="celltype",
         locat_scores=HERE / "Fig2_Dermal_Condensate/celltype_specificity_comparison/scores/locat_scores.npz",
         normalize=False,
@@ -39,7 +39,7 @@ DATASETS = [
     ),
     dict(
         name="Kang Stim",
-        data_path=Path("/banach2/wes/Locat-paper-repro-private/data/kang_counts_25k.h5ad"),
+        data_path=Path(__file__).resolve().parents[2] / "data/kang_counts_25k.h5ad",
         celltype_col="cell_type",
         locat_scores=HERE / "Perturb_PBMC/celltype_specificity_comparison/scores/stim/locat_scores.npz",
         normalize=True,
@@ -47,7 +47,7 @@ DATASETS = [
     ),
     dict(
         name="Kang Ctrl",
-        data_path=Path("/banach2/wes/Locat-paper-repro-private/data/kang_counts_25k.h5ad"),
+        data_path=Path(__file__).resolve().parents[2] / "data/kang_counts_25k.h5ad",
         celltype_col="cell_type",
         locat_scores=HERE / "Perturb_PBMC/celltype_specificity_comparison/scores/ctrl/locat_scores.npz",
         normalize=True,

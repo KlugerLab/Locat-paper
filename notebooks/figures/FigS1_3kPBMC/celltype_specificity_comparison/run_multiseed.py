@@ -2,7 +2,7 @@
 Run all 5 methods for one PCA seed and save results to scores/seed_{N}/.
 
 Usage:
-    /banach2/wes/.conda/envs/mulde_jax/bin/python run_multiseed.py --seed 0 [--gpu 0]
+    LOCAT_PYTHON run_multiseed.py --seed 0 [--gpu 0]
 
 Emits machine-parseable progress lines for monitor_seeds.py:
     STEP_START|ts=...|seed=N|step=K|name=METHOD
@@ -30,13 +30,13 @@ random.seed(SEED)
 np.random.seed(SEED)
 
 HERE      = Path(__file__).parent
-LOCAT_SRC = Path("/banach2/wes/locat-0.1")
-DATA_PATH = Path("/banach2/wes/Locat-paper-repro-private/data/pbmc3k_9543_lognorm.h5ad")
+LOCAT_SRC = Path("LOCAT01_PATH")
+DATA_PATH = Path(__file__).resolve().parents[4] / "data/pbmc3k_9543_lognorm.h5ad"
 OUT_DIR   = HERE / "scores" / f"seed_{SEED}"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
-GSPA_PYTHON = "/banach2/wes/.conda/envs/gspa-env/bin/python"
-LMD_PYTHON  = "/banach2/wes/envs/lmd_rpy2/bin/python"
+GSPA_PYTHON = "GSPA_PYTHON"
+LMD_PYTHON  = "LMD_PYTHON"
 
 if str(LOCAT_SRC) not in sys.path:
     sys.path.insert(0, str(LOCAT_SRC))
@@ -125,7 +125,7 @@ subprocess.run(
      "--data_path", str(tmp_adata),
      "--out_path",  str(OUT_DIR / "lmd_scores.npz")],
     env={**os.environ,
-         "R_HOME": "/banach2/wes/envs/lmd_rpy2/lib/R",
+         "R_HOME": "LMD_R_HOME",
          "R_DEFAULT_PACKAGES": "base,utils,stats,graphics,grDevices,methods",
          "CUDA_VISIBLE_DEVICES": ""},
     check=True,

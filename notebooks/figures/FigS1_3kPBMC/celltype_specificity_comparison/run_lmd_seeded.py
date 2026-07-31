@@ -2,20 +2,21 @@
 LMD is deterministic; variation across seeds comes from the recomputed PCA stored in the adata."""
 import argparse, os, sys
 import numpy as np
+from pathlib import Path
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--data_path", required=True)
 parser.add_argument("--out_path", required=True)
 args = parser.parse_args()
 
-os.environ["R_HOME"] = "/banach2/wes/envs/lmd_rpy2/lib/R"
+os.environ["R_HOME"] = "LMD_R_HOME"
 os.environ["R_DEFAULT_PACKAGES"] = "base,utils,stats,graphics,grDevices,methods"
 os.environ["CUDA_VISIBLE_DEVICES"] = ""
 
 import importlib.util, scanpy as sc
 
 _spec = importlib.util.spec_from_file_location(
-    "run_lmd", "/banach2/wes/Locat-paper-repro-private/tools/run_lmd.py",
+    "run_lmd", str(Path(__file__).resolve().parents[4] / "tools/run_lmd.py"),
 )
 _mod = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(_mod)

@@ -32,32 +32,32 @@ args = parser.parse_args()
 
 os.environ["CUDA_VISIBLE_DEVICES"] = args.gpu
 
-LOCAT_SRC   = Path("/banach2/wes/locat-0.1")
-GSPA_PYTHON = "/banach2/wes/.conda/envs/gspa-env/bin/python"
-LMD_PYTHON  = "/banach2/wes/envs/lmd_rpy2/bin/python"
+LOCAT_SRC   = Path("LOCAT01_PATH")
+GSPA_PYTHON = "GSPA_PYTHON"
+LMD_PYTHON  = "LMD_PYTHON"
 
 # ── Dataset config ─────────────────────────────────────────────────────────────
-GSPA_SCRIPT = Path("/banach2/wes/Locat-paper-repro-private/notebooks/figures/FigS1_3kPBMC/celltype_specificity_comparison/run_gspa_seeded.py")
-LMD_SCRIPT  = Path("/banach2/wes/Locat-paper-repro-private/notebooks/figures/FigS1_3kPBMC/celltype_specificity_comparison/run_lmd_seeded.py")
-KANG_RAW    = Path("/banach2/wes/Locat-paper-repro-private/data/kang_counts_25k.h5ad")
-KANG_OUTDIR = Path("/banach2/wes/Locat-paper-repro-private/notebooks/figures/Perturb_PBMC/celltype_specificity_comparison")
+GSPA_SCRIPT = Path(__file__).resolve().parents[2] / "notebooks/figures/FigS1_3kPBMC/celltype_specificity_comparison/run_gspa_seeded.py"
+LMD_SCRIPT  = Path(__file__).resolve().parents[2] / "notebooks/figures/FigS1_3kPBMC/celltype_specificity_comparison/run_lmd_seeded.py"
+KANG_RAW    = Path(__file__).resolve().parents[2] / "data/kang_counts_25k.h5ad"
+KANG_OUTDIR = Path(__file__).resolve().parents[2] / "notebooks/figures/Perturb_PBMC/celltype_specificity_comparison"
 NORMALIZE   = False  # set True for datasets that need normalization
 
 _boot_tag = "bootstrap_replacement" if args.replace else "subsample_bootstrap"
 
 if args.dataset == "pbmc3k":
-    DATA_PATH      = Path("/banach2/wes/Locat-paper-repro-private/data/pbmc3k_9543_lognorm.h5ad")
+    DATA_PATH      = Path(__file__).resolve().parents[2] / "data/pbmc3k_9543_lognorm.h5ad"
     CELLTYPE_COL   = "louvain"
     CUTOFFS        = [100, 200, 400]
-    OUT_DIR        = Path("/banach2/wes/Locat-paper-repro-private/notebooks/figures/FigS1_3kPBMC/celltype_specificity_comparison") / _boot_tag
+    OUT_DIR        = Path(__file__).resolve().parents[2] / "notebooks/figures/FigS1_3kPBMC/celltype_specificity_comparison" / _boot_tag
     N_BOOT         = args.n_boot or (10 if args.replace else 8)
     TITLE_PREFIX   = "PBMC3k"
     TAU_PCT_THRESH = 0.05   # ≥5% expressing for τ
 elif args.dataset == "dermalc":
-    DATA_PATH      = Path("/banach2/wes/Locat/data/E145_dermal_erez_2026/dc_adata_proc.h5ad")
+    DATA_PATH      = Path(__file__).resolve().parents[2] / "data/E145_dermal_erez_2026/dc_adata_proc.h5ad"
     CELLTYPE_COL   = "celltype"
     CUTOFFS        = [50, 100, 200]
-    OUT_DIR        = Path("/banach2/wes/Locat-paper-repro-private/notebooks/figures/Fig2_Dermal_Condensate/celltype_specificity_comparison") / _boot_tag
+    OUT_DIR        = Path(__file__).resolve().parents[2] / "notebooks/figures/Fig2_Dermal_Condensate/celltype_specificity_comparison" / _boot_tag
     N_BOOT         = args.n_boot or (10 if args.replace else 6)
     TITLE_PREFIX   = "DermalC"
     TAU_PCT_THRESH = 0.05   # ≥5% expressing for τ
@@ -151,7 +151,7 @@ def run_one_boot(adata_sub, boot_idx, seed):
             [LMD_PYTHON, str(LMD_SCRIPT),
              "--data_path", str(tmp), "--out_path", str(lmd_out)],
             env={**os.environ,
-                 "R_HOME": "/banach2/wes/envs/lmd_rpy2/lib/R",
+                 "R_HOME": "LMD_R_HOME",
                  "R_DEFAULT_PACKAGES": "base,utils,stats,graphics,grDevices,methods",
                  "CUDA_VISIBLE_DEVICES": ""},
             check=True,

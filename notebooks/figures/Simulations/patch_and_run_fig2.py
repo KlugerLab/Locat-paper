@@ -1,6 +1,6 @@
 """
 Patches simulations_unimodal_locat01_repro.ipynb to:
-  - Use locat-0.1 from /banach2/wes/locat-0.1
+  - Use locat-0.1 from LOCAT01_PATH
   - Use GPU 2 (free at time of writing)
   - 1.5x larger axis labels (fontsize=15) and titles (fontsize=18)
   - Larger tick labels (labelsize=13)
@@ -15,7 +15,7 @@ from pathlib import Path
 
 NB_IN = Path(__file__).parent / "simulations_unimodal_locat01_repro.ipynb"
 NB_OUT = Path(__file__).parent / "simulations_unimodal_locat01_repro_improved.ipynb"
-LOCAT01_PATH = "/banach2/wes/locat-0.1"
+LOCAT01_PATH = "LOCAT01_PATH"
 GPU = "2"
 
 
@@ -72,7 +72,7 @@ def main():
 
     print(f"Patched notebook written to: {NB_OUT}")
 
-    python = "/banach2/wes/.conda/envs/mulde_jax/bin/python3.10"
+    python = "LOCAT_PYTHON"
     cmd = [
         python, "-m", "nbconvert",
         "--to", "notebook",

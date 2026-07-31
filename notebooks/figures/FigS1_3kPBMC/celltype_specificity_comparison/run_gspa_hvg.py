@@ -1,5 +1,6 @@
 """Run GSPA on 3k PBMC restricted to 1838 HVGs."""
 import os, sys, numpy as np, scanpy as sc, scipy.sparse as sp
+from pathlib import Path
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "2"
 SEED = 13
@@ -7,8 +8,8 @@ np.random.seed(SEED)
 
 import gspa, phate
 
-DATA_PATH = "/banach2/wes/Locat-paper-repro-private/data/pbmc3k_hvg_lognorm.h5ad"
-OUT_PATH  = "/banach2/wes/Locat-paper-repro-private/notebooks/figures/Perturb_PBMC/celltype_specificity_comparison/gspa_scores_hvg.npz"
+DATA_PATH = str(Path(__file__).resolve().parents[4] / "data/pbmc3k_hvg_lognorm.h5ad")
+OUT_PATH  = str(Path(__file__).resolve().parents[4] / "notebooks/figures/Perturb_PBMC/celltype_specificity_comparison/gspa_scores_hvg.npz")
 
 adata = sc.read_h5ad(DATA_PATH)
 X = adata.X.toarray() if sp.issparse(adata.X) else adata.X.astype("float64")

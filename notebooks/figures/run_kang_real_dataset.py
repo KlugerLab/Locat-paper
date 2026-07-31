@@ -23,12 +23,12 @@ args = parser.parse_args()
 os.environ["CUDA_VISIBLE_DEVICES"] = args.gpu
 
 HERE      = Path(__file__).parent
-LOCAT_SRC = Path("/banach2/wes/locat-0.1")
-DATA_PATH = Path("/banach2/wes/Locat-paper-repro-private/data/kang_counts_25k.h5ad")
-GSPA_PYTHON = "/banach2/wes/.conda/envs/gspa-env/bin/python"
-LMD_PYTHON  = "/banach2/wes/envs/lmd_rpy2/bin/python"
-LMD_SCRIPT  = Path("/banach2/wes/Locat-paper-repro-private/notebooks/figures/FigS1_3kPBMC/celltype_specificity_comparison/run_lmd_seeded.py")
-GSPA_SCRIPT = Path("/banach2/wes/Locat-paper-repro-private/notebooks/figures/FigS1_3kPBMC/celltype_specificity_comparison/run_gspa_seeded.py")
+LOCAT_SRC = Path("LOCAT01_PATH")
+DATA_PATH = Path(__file__).resolve().parents[2] / "data/kang_counts_25k.h5ad"
+GSPA_PYTHON = "GSPA_PYTHON"
+LMD_PYTHON  = "LMD_PYTHON"
+LMD_SCRIPT  = Path(__file__).resolve().parents[2] / "notebooks/figures/FigS1_3kPBMC/celltype_specificity_comparison/run_lmd_seeded.py"
+GSPA_SCRIPT = Path(__file__).resolve().parents[2] / "notebooks/figures/FigS1_3kPBMC/celltype_specificity_comparison/run_gspa_seeded.py"
 
 OUT_DIR = HERE / "Perturb_PBMC/celltype_specificity_comparison" / f"real_dataset_n100_{args.condition}"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -93,7 +93,7 @@ t0 = time.time()
 subprocess.run(
     [LMD_PYTHON, str(LMD_SCRIPT), "--data_path", str(tmp),
      "--out_path", str(OUT_DIR / "lmd_scores.npz")],
-    env={**os.environ, "R_HOME": "/banach2/wes/envs/lmd_rpy2/lib/R",
+    env={**os.environ, "R_HOME": "LMD_R_HOME",
          "R_DEFAULT_PACKAGES": "base,utils,stats,graphics,grDevices,methods",
          "CUDA_VISIBLE_DEVICES": ""},
     check=True,

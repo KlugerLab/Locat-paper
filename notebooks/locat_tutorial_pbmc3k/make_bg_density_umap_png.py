@@ -9,7 +9,7 @@ from locat.preprocessing import filter_genes, get_embedding
 
 
 def main():
-    repo = Path('/banach2/wes/Locat-paper-repro-private')
+    repo = Path(__file__).resolve().parents[2]
     data_dir = repo / 'data'
     out_png = repo / 'notebooks' / 'locat_tutorial_pbmc3k' / 'pbmc3k_umap_locat_bg_density_pca8.png'
 

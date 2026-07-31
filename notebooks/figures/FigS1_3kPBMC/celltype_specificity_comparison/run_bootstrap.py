@@ -25,7 +25,7 @@ parser.add_argument("--seed",   type=int, default=0)
 args = parser.parse_args()
 
 HERE      = Path(__file__).parent
-DATA_PATH = Path("/banach2/wes/Locat-paper-repro-private/data/pbmc3k_9543_lognorm.h5ad")
+DATA_PATH = Path(__file__).resolve().parents[4] / "data/pbmc3k_9543_lognorm.h5ad"
 SCORES_DIR = HERE / "scores" / "seed_0"
 CUTOFFS   = [100, 200, 400]
 
