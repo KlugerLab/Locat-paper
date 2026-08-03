@@ -15,8 +15,17 @@ notebooks/figures/FigS1_3kPBMC/celltype_specificity_comparison/bootstrap_results
 # Per-boot score files from subsample bootstrap (reproducible from raw.npy)
 notebooks/figures/**/subsample_bootstrap/boot_*/
 
+# Raw sequencing data (reproducible from GEO: GSM4770979, GSM4770980)
+data/chlamydomonas/*.csv.gz
+
+# Reproducible method-comparison score caches (Chlamydomonas, Tabula Muris Marrow)
+notebooks/figures/Chlamydomonas/comparison_results/**/*_scores.npz
+notebooks/figures/Chlamydomonas/locat_run/scores/**/*_scores.npz
+notebooks/figures/TabulaMuris_Marrow/scores/*_scores.npz
+
 # Logs and checkpoints
 *.log
+*.pid
 __pycache__/
 *.pyc
 .ipynb_checkpoints/
